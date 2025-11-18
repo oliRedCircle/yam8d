@@ -1,18 +1,8 @@
-import { css, cx } from '@linaria/core'
 import { forwardRef, useEffect, useRef } from 'react'
 import { mergeRefs } from '../utils/mergeRefs'
 import type { ConnectedBus } from './connection/connection'
 import type { CharacterCommand, RectCommand, WaveCommand } from './connection/protocol'
 import { renderer } from './rendering/renderer'
-
-const _m8ScreenClass = css`
-  font-family: monospace;
-  min-width: 480px;
-  min-height: 320px;
-
-  width: 48vw;
-  height: 32vw;
-`
 
 export const M8Screen = forwardRef<HTMLCanvasElement, { bus: ConnectedBus | undefined }>(function M8Screen({ bus }, ref) {
   const innerRef = useRef<HTMLCanvasElement | null>(null)
@@ -94,5 +84,5 @@ export const M8Screen = forwardRef<HTMLCanvasElement, { bus: ConnectedBus | unde
     return () => bus?.protocol.eventBus.off('text', handler)
   }, [bus])
 */
-  return <canvas className={cx(_m8ScreenClass, 'element')} ref={refs} />
+  return <canvas className="element" ref={refs} />
 })
