@@ -15,8 +15,8 @@ export const midi = () => {
     const input = inputs[0][1]
     const output = outputs[0][1]
 
-    const _inputPort = await input.open()
-    const _outputPort = await output.open()
+    await input.open()
+    await output.open()
 
     input.addEventListener('midimessage', (ev) => console.log([...(ev.data ?? [])].map((x) => x.toString(16).padStart(2, '0')).join(' ')))
     output.send([0xf0, 0x00, 0x02, 0x61, 0x00, 0x00, 'D'.charCodeAt(0), 0xf7])

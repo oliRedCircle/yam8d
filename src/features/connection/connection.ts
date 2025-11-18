@@ -296,7 +296,7 @@ export const connection = () => {
     }
   }
 
-  const _midiConnect = async () => {
+  const midiConnect = async () => {
     const access = await navigator.requestMIDIAccess({ sysex: true })
     const inputs = [...access.inputs].map((x) => x[1]).filter((input) => input.name === 'M8')
     const outputs = [...access.outputs].map((x) => x[1]).filter((output) => output.name === 'M8')
@@ -323,7 +323,7 @@ export const connection = () => {
 
   const connect = async () => {
     // const connection = await (webMidiAvailable ? midiConnect() : webSerialAvailable ? serialConnect() : usbConnect())
-    const connection = await (webSerialAvailable ? serialConnect() : usbConnect())
+    const connection = await (webSerialAvailable ? serialConnect() : webUsbAvailable ? usbConnect() : midiConnect())
     connection.commands.resetScreen()
     const protocolHandler = protocol()
     beginRead(connection.reader, protocolHandler, false)
