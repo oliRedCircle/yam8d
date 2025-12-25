@@ -1,0 +1,28 @@
+/* Prescreen container rules */
+.prescreen {
+    font-family: "Kode";
+    width: 100%;
+    container-type: inline-size;
+}
+
+/* Any pre within prescreen has zero margin (includes the sizer) */
+.prescreen pre {
+    margin: 0;
+    font-family: "Kode";
+    font-size: 2.18cqi;
+    transform: scaleX(1.8);
+}
+
+/* Row divs within any prescreen pre (includes the sizer rows) */
+.prescreen pre>div {
+    margin: 0;
+    white-space: pre;
+}
+
+/* Only the layered pre elements get absolute positioning/overlay behavior */
+.prescreen .prescreen-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    user-select: none;
+}
