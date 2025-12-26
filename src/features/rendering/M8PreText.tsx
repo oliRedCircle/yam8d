@@ -2,8 +2,8 @@ import { forwardRef, useEffect, useRef } from 'react'
 import type { ConnectedBus } from '../connection/connection'
 import type { CharacterCommand } from '../connection/protocol'
 
-// kronsilds: this rendering is pure html
-// it use the CharacterCommand sent by the bus.text
+// this rendering is pure html
+// it uses the CharacterCommand sent by the bus.text
 // for optimisation I created several layers of pre, one per color
 // in each pre there one div per row (24 rows)
 // The background color is sampled to take the most 
@@ -29,6 +29,7 @@ export const M8PreText = forwardRef<HTMLDivElement, { bus: ConnectedBus | undefi
         const fgLayers = new Map<string, Layer>()
         const colorAt: string[][] = []
         const bgAt: string[][] = []
+        // for counting the number of times each background colour appears to select the most common color
         const bgCounts = new Map<string, number>()
         const bgCurrent = { value: '' as string }
         for (let y = 0; y < HEIGHT; y += 1) {
@@ -66,31 +67,7 @@ export const M8PreText = forwardRef<HTMLDivElement, { bus: ConnectedBus | undefi
             return layer
         }
 
-        if (container.current) {
-            const el = container.current
-            el.style.position = 'relative'
-            // Ensure a single hidden sizer exists to give intrinsic size
-            let sizer = el.querySelector('pre[data-m8-sizer]') as HTMLPreElement | null
-            if (!sizer) {
-                sizer = document.createElement('pre')
-                sizer.setAttribute('data-m8-sizer', '')
-                sizer.style.visibility = 'hidden'
-                for (let y = 0; y < HEIGHT; y += 1) {
-                    const div = document.createElement('div')
-                    div.textContent = ' '.repeat(WIDTH)
-                    sizer.appendChild(div)
-                }
-                el.appendChild(sizer)
-            }
-
-            // Ensure we remove the sizer when effect cleans up
-            const removeSizer = () => {
-                try { el.removeChild(sizer) } catch { }
-            }
-            // container has className "element prescreen" in JSX return
-            // @ts-expect-error: internal cleanup hook
-            el.__m8SizerCleanup = removeSizer
-        }
+        // Sizing handled purely via CSS on .prescreen; no JS sizer needed
 
         // bus content handler
         const handler = (data: CharacterCommand) => {
@@ -110,7 +87,7 @@ export const M8PreText = forwardRef<HTMLDivElement, { bus: ConnectedBus | undefi
 
             const prevFgColor = colorAt[idx_y][idx_x]
 
-            // Foreground: clear previous char
+            // clear previous char on the layer
             if (prevFgColor) {
                 const prevLayer = fgLayers.get(prevFgColor)
                 if (prevLayer) {

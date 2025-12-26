@@ -4,7 +4,7 @@ import { type FC, useCallback, useState } from 'react'
 import { Button } from './components/Button'
 import type { ConnectedBus } from './features/connection/connection'
 import { device } from './features/connection/device'
-import { M8Player } from './features/M8View'
+import { M8Player } from './features/M8Player'
 
 const appClass = css`
   display: flex;

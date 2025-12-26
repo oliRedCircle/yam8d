@@ -110,8 +110,9 @@ const containerClass = css`
 const screen = css`
   z-index: -1;
   left:-1px;
-
+  container-type: inline-size;
 `
+
 const SvgComponent: FC<{
   strokeColor: string
   bus?: ConnectedBus
